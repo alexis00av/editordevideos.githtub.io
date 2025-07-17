@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexis | Filmmaker & Editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      background-color: #000;
+    }
+    .video-background {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+      filter: brightness(0.4);
+    }
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #cccccc;
+    }
+    .btn-main {
+      background: #ffffff;
+      color: #000;
+      border: none;
+      padding: 12px 30px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .btn-main:hover {
+      background: #333;
+      color: #fff;
+    }
+    .social-icons {
+      margin-top: 20px;
+    }
+    .social-icons a {
+      color: #fff;
+      margin: 0 10px;
+      font-size: 1.8rem;
+      transition: color 0.3s ease;
+    }
+    .social-icons a:hover {
+      color: #0d6efd;
+    }
+    footer {
+      background: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<video autoplay muted loop class="video-background">
+  <source src="https://cdn.coverr.co/videos/coverr-aerial-night-drone-view-0410/1080p.mp4" type="video/mp4">
+  Tu navegador no soporta videos en fondo.
+</video>
+
+<section class="hero">
+  <div>
+    <h1>Hola, soy Alexis</h1>
+    <p>Editor de video | Creador visual | Hago que tu contenido destaque</p>
+    <a href="#contacto" class="btn btn-main mt-4">Contáctame</a>
+    <div class="social-icons mt-4">
+      <a href="https://www.instagram.com/menteinvencible.oficial" target="_blank"><i class="bi bi-instagram"></i></a>
+      <a href="https://www.tiktok.com/@alexis_av0" target="_blank"><i class="bi bi-tiktok"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Alexis AV | Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
