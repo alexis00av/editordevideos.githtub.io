@@ -1,104 +1,260 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alexis | Filmmaker & Editor</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Página Dinámica</title>
+  
+  <!-- Swiper CSS para el slider -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+  />
+
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      background-color: #000;
+    /* Paleta de colores como variables */
+    :root {
+      --bg-dark: #0a0a0a;
+      --accent: #ff4c60;
+      --text-light: #f5f5f5;
     }
-    .video-background {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      object-fit: cover;
-      filter: brightness(0.4);
+
+    /* Reseteo y estilos base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
     }
-    .hero {
+
+    /* HEADER con parallax */
+    header {
+      position: relative;
       height: 100vh;
+      background-image: url('https://picsum.photos/1600/900?blur=2');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
+      overflow: hidden;
     }
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: bold;
-      color: #ffffff;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      color: #cccccc;
-    }
-    .btn-main {
-      background: #ffffff;
-      color: #000;
-      border: none;
-      padding: 12px 30px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-    .btn-main:hover {
-      background: #333;
-      color: #fff;
-    }
-    .social-icons {
-      margin-top: 20px;
-    }
-    .social-icons a {
-      color: #fff;
-      margin: 0 10px;
-      font-size: 1.8rem;
-      transition: color 0.3s ease;
-    }
-    .social-icons a:hover {
-      color: #0d6efd;
-    }
-    footer {
-      background: #111;
-      color: #aaa;
-      text-align: center;
-      padding: 1rem;
+
+    /* Contenido principal del header */
+    header .content {
       position: relative;
+      z-index: 3;
+      max-width: 600px;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    header p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+    }
+
+    /* Canvas para partículas */
+    #particle-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
+    }
+
+    /* Contenedor de imágenes flotantes */
+    .floating-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    /* Estilos y animaciones de cada floating img */
+    .floating-container img {
+      position: absolute;
+      width: var(--float-size, 80px);
+      opacity: 0.8;
+      filter: hue-rotate(200deg) saturate(1.2);
+      animation:
+        floatY var(--float-duration, 8s) ease-in-out infinite,
+        floatX calc(var(--float-duration, 8s) * 1.2) ease-in-out infinite;
+    }
+    @keyframes floatY {
+      0%   { transform: translateY(100%) rotate(0deg); }
+      50%  { transform: translateY(-20%) rotate(180deg); }
+      100% { transform: translateY(100%) rotate(360deg); }
+    }
+    @keyframes floatX {
+      0%   { transform: translateX(0); }
+      50%  { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* SECCIÓN SLIDER */
+    .slider-section {
+      padding: 4rem 0;
+      background: #111;
+    }
+    .swiper-container {
+      width: 90%;
+      max-width: 800px;
+      height: 300px;
+      margin: auto;
+    }
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+    }
+    .swiper-slide img {
+      width: auto;
+      height: 80%;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: var(--accent);
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--accent);
     }
   </style>
 </head>
+
 <body>
+  <header>
+    <!-- Partículas de fondo -->
+    <canvas id="particle-canvas"></canvas>
 
-<video autoplay muted loop class="video-background">
-  <source src="https://cdn.coverr.co/videos/coverr-aerial-night-drone-view-0410/1080p.mp4" type="video/mp4">
-  Tu navegador no soporta videos en fondo.
-</video>
-
-<section class="hero">
-  <div>
-    <h1>Hola, soy Alexis</h1>
-    <p>Editor de video | Creador visual | Hago que tu contenido destaque</p>
-    <a href="#contacto" class="btn btn-main mt-4">Contáctame</a>
-    <div class="social-icons mt-4">
-      <a href="https://www.instagram.com/menteinvencible.oficial" target="_blank"><i class="bi bi-instagram"></i></a>
-      <a href="https://www.tiktok.com/@alexis_av0" target="_blank"><i class="bi bi-tiktok"></i></a>
+    <!-- Texto sobre el parallax -->
+    <div class="content">
+      <h1>Bienvenido a Mi Sitio</h1>
+      <p>
+        Descubre un universo de animaciones: parallax, imágenes flotando,
+        partículas y un slider interactivo. ¡Todo en tu paleta de colores!
+      </p>
     </div>
-  </div>
-</section>
 
-<footer>
-  <p>&copy; 2025 Alexis AV | Todos los derechos reservados</p>
-</footer>
+    <!-- Imágenes flotantes (placeholder) -->
+    <div class="floating-container"></div>
+  </header>
 
+  <!-- Slider dinámico con Swiper.js -->
+  <section class="slider-section">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img src="https://picsum.photos/seed/1/400/300" alt="Slide 1">
+        </div>
+        <div class="swiper-slide">
+          <img src="https://picsum.photos/seed/2/400/300" alt="Slide 2">
+        </div>
+        <div class="swiper-slide">
+          <img src="https://picsum.photos/seed/3/400/300" alt="Slide 3">
+        </div>
+        <div class="swiper-slide">
+          <img src="https://picsum.photos/seed/4/400/300" alt="Slide 4">
+        </div>
+      </div>
+      <!-- Paginación y flechas -->
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </section>
+
+  <!-- Swiper JS -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    // 1. FLUTTER IMÁGENES
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.floating-container');
+      const images = [
+        'https://img.icons8.com/ios-filled/100/ffffff/rocket.png',
+        'https://img.icons8.com/ios-filled/100/ffffff/saturn.png',
+        'https://img.icons8.com/ios-filled/100/ffffff/star.png',
+        'https://img.icons8.com/ios-filled/100/ffffff/planet-earth.png'
+      ];
+      images.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.left = Math.random() * 100 + '%';
+        img.style.setProperty('--float-size', `${50 + Math.random() * 100}px`);
+        img.style.setProperty('--float-duration', `${6 + Math.random() * 6}s`);
+        container.appendChild(img);
+      });
+    });
+
+    // 2. SLIDER SWIPER
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      speed: 800,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      }
+    });
+
+    // 3. PARTÍCULAS STARFIELD
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [], W, H;
+    function initParticles() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5,
+          d: Math.random() * 150
+        });
+      }
+    }
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      moveParticles();
+    }
+    let angle = 0;
+    function moveParticles() {
+      angle += 0.01;
+      stars.forEach(s => {
+        s.y += Math.cos(angle + s.d) + 1 + s.r / 2;
+        s.x += Math.sin(angle) * 2;
+        if (s.x > W || s.x < 0 || s.y > H) {
+          s.x = Math.random() * W;
+          s.y = -10;
+        }
+      });
+    }
+    function animate() {
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', initParticles);
+    initParticles();
+    animate();
+  </script>
 </body>
 </html>
-'''
