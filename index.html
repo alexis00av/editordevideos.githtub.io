@@ -1,260 +1,628 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mi Página Dinámica</title>
-  
-  <!-- Swiper CSS para el slider -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/swiper/swiper-bundle.min.css"
-  />
-
-  <style>
-    /* Paleta de colores como variables */
-    :root {
-      --bg-dark: #0a0a0a;
-      --accent: #ff4c60;
-      --text-light: #f5f5f5;
-    }
-
-    /* Reseteo y estilos base */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg-dark);
-      color: var(--text-light);
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* HEADER con parallax */
-    header {
-      position: relative;
-      height: 100vh;
-      background-image: url('https://picsum.photos/1600/900?blur=2');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    /* Contenido principal del header */
-    header .content {
-      position: relative;
-      z-index: 3;
-      max-width: 600px;
-    }
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: var(--accent);
-    }
-    header p {
-      font-size: 1.2rem;
-      line-height: 1.5;
-    }
-
-    /* Canvas para partículas */
-    #particle-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    /* Contenedor de imágenes flotantes */
-    .floating-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    /* Estilos y animaciones de cada floating img */
-    .floating-container img {
-      position: absolute;
-      width: var(--float-size, 80px);
-      opacity: 0.8;
-      filter: hue-rotate(200deg) saturate(1.2);
-      animation:
-        floatY var(--float-duration, 8s) ease-in-out infinite,
-        floatX calc(var(--float-duration, 8s) * 1.2) ease-in-out infinite;
-    }
-    @keyframes floatY {
-      0%   { transform: translateY(100%) rotate(0deg); }
-      50%  { transform: translateY(-20%) rotate(180deg); }
-      100% { transform: translateY(100%) rotate(360deg); }
-    }
-    @keyframes floatX {
-      0%   { transform: translateX(0); }
-      50%  { transform: translateX(20px); }
-      100% { transform: translateX(0); }
-    }
-
-    /* SECCIÓN SLIDER */
-    .slider-section {
-      padding: 4rem 0;
-      background: #111;
-    }
-    .swiper-container {
-      width: 90%;
-      max-width: 800px;
-      height: 300px;
-      margin: auto;
-    }
-    .swiper-slide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-dark);
-    }
-    .swiper-slide img {
-      width: auto;
-      height: 80%;
-    }
-    .swiper-button-next,
-    .swiper-button-prev {
-      color: var(--accent);
-    }
-    .swiper-pagination-bullet-active {
-      background: var(--accent);
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <!-- Partículas de fondo -->
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- Texto sobre el parallax -->
-    <div class="content">
-      <h1>Bienvenido a Mi Sitio</h1>
-      <p>
-        Descubre un universo de animaciones: parallax, imágenes flotando,
-        partículas y un slider interactivo. ¡Todo en tu paleta de colores!
-      </p>
-    </div>
-
-    <!-- Imágenes flotantes (placeholder) -->
-    <div class="floating-container"></div>
-  </header>
-
-  <!-- Slider dinámico con Swiper.js -->
-  <section class="slider-section">
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="https://picsum.photos/seed/1/400/300" alt="Slide 1">
-        </div>
-        <div class="swiper-slide">
-          <img src="https://picsum.photos/seed/2/400/300" alt="Slide 2">
-        </div>
-        <div class="swiper-slide">
-          <img src="https://picsum.photos/seed/3/400/300" alt="Slide 3">
-        </div>
-        <div class="swiper-slide">
-          <img src="https://picsum.photos/seed/4/400/300" alt="Slide 4">
-        </div>
-      </div>
-      <!-- Paginación y flechas -->
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-    </div>
-  </section>
-
-  <!-- Swiper JS -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script>
-    // 1. FLUTTER IMÁGENES
-    document.addEventListener('DOMContentLoaded', () => {
-      const container = document.querySelector('.floating-container');
-      const images = [
-        'https://img.icons8.com/ios-filled/100/ffffff/rocket.png',
-        'https://img.icons8.com/ios-filled/100/ffffff/saturn.png',
-        'https://img.icons8.com/ios-filled/100/ffffff/star.png',
-        'https://img.icons8.com/ios-filled/100/ffffff/planet-earth.png'
-      ];
-      images.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.style.left = Math.random() * 100 + '%';
-        img.style.setProperty('--float-size', `${50 + Math.random() * 100}px`);
-        img.style.setProperty('--float-duration', `${6 + Math.random() * 6}s`);
-        container.appendChild(img);
-      });
-    });
-
-    // 2. SLIDER SWIPER
-    const swiper = new Swiper('.swiper-container', {
-      loop: true,
-      speed: 800,
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      pagination: { el: '.swiper-pagination', clickable: true },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      }
-    });
-
-    // 3. PARTÍCULAS STARFIELD
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let stars = [], W, H;
-    function initParticles() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      stars = [];
-      for (let i = 0; i < 150; i++) {
-        stars.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 1.5,
-          d: Math.random() * 150
-        });
-      }
-    }
-    function drawParticles() {
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
-      stars.forEach(s => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      moveParticles();
-    }
-    let angle = 0;
-    function moveParticles() {
-      angle += 0.01;
-      stars.forEach(s => {
-        s.y += Math.cos(angle + s.d) + 1 + s.r / 2;
-        s.x += Math.sin(angle) * 2;
-        if (s.x > W || s.x < 0 || s.y > H) {
-          s.x = Math.random() * W;
-          s.y = -10;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alexis | Editor Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Paleta de Colores y Variables --- */
+        :root {
+            --bg-dark: #0d1117;
+            --bg-light: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --accent-color: #58a6ff; /* Un azul vibrante y moderno */
+            --accent-hover: #79c0ff;
+            --border-color: #30363d;
+            --premium-gradient: linear-gradient(135deg, #8a2be2, #58a6ff);
         }
-      });
-    }
-    function animate() {
-      drawParticles();
-      requestAnimationFrame(animate);
-    }
-    window.addEventListener('resize', initParticles);
-    initParticles();
-    animate();
-  </script>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased; /* Mejora la legibilidad de la fuente */
+        }
+
+        /* --- Encabezado --- */
+        header {
+            padding: 100px 20px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(88,166,255,0.1) 0%, rgba(13,17,23,0) 70%);
+            z-index: -1;
+        }
+
+        header h1 {
+            font-size: 4em;
+            font-weight: 700;
+            /* Efecto de texto con gradiente */
+            background: linear-gradient(90deg, var(--accent-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.2em;
+            text-shadow: 0 2px 10px rgba(88, 166, 255, 0.2);
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.2em;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Barra de Navegación --- */
+        nav {
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px); /* Efecto "glassmorphism" */
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 999;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Secciones --- */
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        section h2 {
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 600;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        #sobre-mi p {
+            font-size: 1.1em;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* --- Tarjetas de Servicios --- */
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .servicio {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: left;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .servicio:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .servicio i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        
+        .servicio h3 {
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .servicio p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- Sección de Precios --- */
+        .planes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .plan {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px 30px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .plan:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .plan.recomendado {
+            border: 2px solid var(--accent-color);
+            transform: scale(1.03);
+            z-index: 2;
+        }
+
+        .plan.recomendado::before {
+            content: 'MÁS POPULAR';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            font-weight: 700;
+            font-size: 0.8em;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            width: 150px;
+            text-align: center;
+        }
+
+        .plan.premium {
+            background: linear-gradient(135deg, #1a1f29, #0d1117);
+            border: 1px solid #4a38b3;
+        }
+
+        .plan.premium .nombre-plan {
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .plan .nombre-plan {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .plan .precio {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+        }
+
+        .plan .precio span {
+            font-size: 0.5em;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .plan .caracteristicas {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .plan .caracteristicas li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .plan .caracteristicas li:last-child {
+            border-bottom: none;
+        }
+
+        .plan .caracteristicas li i {
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .plan .cta-plan {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent-color);
+        }
+
+        .plan .cta-plan:hover {
+            background: transparent;
+            color: var(--accent-color);
+        }
+
+        .plan.premium .cta-plan {
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+        }
+
+        .plan.premium .cta-plan:hover {
+            background: transparent;
+            border: 2px solid #8a2be2;
+            color: var(--accent-color);
+        }
+
+        /* --- ¡NUEVO! Sección de Portafolio --- */
+        .portafolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .portafolio-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .portafolio-item:hover {
+            transform: scale(1.03);
+        }
+
+        .portafolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .portafolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portafolio-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            color: #fff;
+            padding: 40px 20px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .portafolio-item:hover .overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .overlay h3 {
+            margin-bottom: 5px;
+        }
+
+        /* --- Sección de Contacto y Botón CTA --- */
+        #contacto p {
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            color: var(--text-secondary);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--accent-color);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+
+        footer .social-icons a {
+            margin: 0 15px;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block; /* Para que la transformación funcione */
+        }
+
+        footer .social-icons a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        footer p {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        /* --- Animaciones --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* --- Media Queries para Móviles --- */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5em; }
+            header p { font-size: 1em; }
+            section h2 { font-size: 2em; }
+            nav { gap: 15px; flex-wrap: wrap; }
+            .planes-grid { grid-template-columns: 1fr; }
+            .plan.recomendado { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Alexis</h1>
+        <p>Editor de video profesional | Llevando tu contenido al siguiente nivel</p>
+    </header>
+
+    <nav>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#precios">Precios</a>
+        <a href="#portafolio">Portafolio</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <section id="sobre-mi">
+        <h2>Hola, soy Alexis.</h2>
+        <p>Con pasión por la narrativa visual, ayudo a creadores, marcas y emprendedores a transformar sus ideas en contenido audiovisual que no solo se ve bien, sino que conecta, engancha y convierte. Mi enfoque combina técnica de vanguardia, estilo dinámico y una estrategia clara para que tu mensaje resuene.</p>
+    </section>
+
+    <section id="servicios">
+        <h2>Mis Servicios</h2>
+        <div class="servicios-grid">
+            <div class="servicio">
+                <i class="bi bi-film"></i>
+                <h3>Edición de Video Avanzada</h3>
+                <p>Desde cortes y corrección de color hasta motion graphics y diseño de sonido. Transformo tu material crudo en una pieza profesional y pulida.</p>
+            </div>
+            <div class="servicio">
+                <i class="bi bi-instagram"></i>
+                <h3>Contenido para Redes Sociales</h3>
+                <p>Videos cortos y dinámicos optimizados para Reels, TikTok y Shorts. Formatos verticales diseñados para captar la atención y volverse virales.</p>
+            </div>
+            <div class="servicio">
+                <i class="bi bi-rocket-takeoff"></i>
+                <h3>Videos Publicitarios de Alto Impacto</h3>
+                <p>Anuncios que venden. Creamos videos persuasivos y atractivos que destacan tu producto o servicio y llevan a la acción.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Nueva sección de precios -->
+    <section id="precios">
+        <h2>Planes y Precios</h2>
+        <p>Ofrezco opciones flexibles adaptadas a tus necesidades. Todos los planes incluyen revisión ilimitada y entrega rápida.</p>
+        
+        <div class="planes-grid">
+            <div class="plan">
+                <div class="nombre-plan">Básico</div>
+                <div class="precio">$99<span>/video</span></div>
+                <ul class="caracteristicas">
+                    <li><i class="bi bi-check-circle"></i> Hasta 5 minutos de duración</li>
+                    <li><i class="bi bi-check-circle"></i> Edición estándar</li>
+                    <li><i class="bi bi-check-circle"></i> Corrección de color básica</li>
+                    <li><i class="bi bi-check-circle"></i> 1 revisión</li>
+                    <li><i class="bi bi-check-circle"></i> Entrega en 3 días</li>
+                </ul>
+                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+            </div>
+            
+            <div class="plan recomendado">
+                <div class="nombre-plan">Profesional</div>
+                <div class="precio">$199<span>/video</span></div>
+                <ul class="caracteristicas">
+                    <li><i class="bi bi-check-circle"></i> Hasta 10 minutos de duración</li>
+                    <li><i class="bi bi-check-circle"></i> Edición avanzada</li>
+                    <li><i class="bi bi-check-circle"></i> Corrección de color profesional</li>
+                    <li><i class="bi bi-check-circle"></i> 2 revisiones</li>
+                    <li><i class="bi bi-check-circle"></i> Transiciones y efectos</li>
+                    <li><i class="bi bi-check-circle"></i> Diseño básico de sonido</li>
+                    <li><i class="bi bi-check-circle"></i> Entrega en 2 días</li>
+                </ul>
+                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+            </div>
+            
+            <div class="plan premium">
+                <div class="nombre-plan">Premium</div>
+                <div class="precio">$349<span>/video</span></div>
+                <ul class="caracteristicas">
+                    <li><i class="bi bi-check-circle"></i> Duración ilimitada</li>
+                    <li><i class="bi bi-check-circle"></i> Edición profesional completa</li>
+                    <li><i class="bi bi-check-circle"></i> Corrección de color avanzada</li>
+                    <li><i class="bi bi-check-circle"></i> Revisiones ilimitadas</li>
+                    <li><i class="bi bi-check-circle"></i> Motion graphics y animaciones</li>
+                    <li><i class="bi bi-check-circle"></i> Diseño de sonido profesional</li>
+                    <li><i class="bi bi-check-circle"></i> Subtítulos y gráficos</li>
+                    <li><i class="bi bi-check-circle"></i> Entrega en 24-48 horas</li>
+                    <li><i class="bi bi-check-circle"></i> Soporte prioritario</li>
+                </ul>
+                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; background: var(--bg-light); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <h3 style="color: var(--accent-color); margin-bottom: 15px; text-align: center;"><i class="bi bi-info-circle"></i> Notas importantes</h3>
+            <ul style="color: var(--text-secondary); line-height: 1.7; padding-left: 20px;">
+                <li>Los precios son por video editado</li>
+                <li>Proyectos complejos pueden requerir presupuesto personalizado</li>
+                <li>Descuentos disponibles para paquetes de múltiples videos</li>
+                <li>Todos los planes incluyen derechos de uso del contenido final</li>
+                <li>Garantía de satisfacción: si no te gusta el resultado, re-edito sin costo adicional</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section id="portafolio">
+        <h2>Mis Trabajos Recientes</h2>
+        <div class="portafolio-grid">
+            <div class="portafolio-item">
+                <img src="https://via.placeholder.com/500x281/161b22/58a6ff?text=Proyecto+1" alt="Video thumbnail">
+                <div class="overlay">
+                    <h3>Campaña para Marca Fitness</h3>
+                    <p>Edición y Post-producción</p>
+                </div>
+            </div>
+            <div class="portafolio-item">
+                <img src="https://via.placeholder.com/500x281/161b22/58a6ff?text=Proyecto+2" alt="Video thumbnail">
+                <div class="overlay">
+                    <h3>Reel Viral para Creador</h3>
+                    <p>Edición dinámica y subtítulos</p>
+                </div>
+            </div>
+            <div class="portafolio-item">
+                <img src="https://via.placeholder.com/500x281/161b22/58a6ff?text=Proyecto+3" alt="Video thumbnail">
+                <div class="overlay">
+                    <h3>Anuncio para App Móvil</h3>
+                    <p>Motion Graphics y edición</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contacto">
+        <h2>¿Listo para empezar?</h2>
+        <p>Hablemos de tu próximo proyecto. Envíame un mensaje y empecemos a crear algo increíble juntos.</p>
+        <a href="mailto:alexiseditor@correo.com" class="cta-button">¡Hablemos de tu Proyecto!</a>
+    </section>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/alexis_.av0/?utm_source=ig_web_button_share_sheet" target="_blank" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@alexis_av0" target="_blank" aria-label="TikTok">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            </div>
+        <p>© 2025 Alexis | Todos los derechos reservados</p>
+    </footer>
+
 </body>
 </html>
