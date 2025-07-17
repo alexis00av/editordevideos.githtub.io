@@ -63,7 +63,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.1;
+            opacity: 0.2;
             z-index: -1;
             overflow: hidden;
         }
@@ -77,6 +77,28 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .editor-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 0%, var(--bg-dark) 150%);
+            z-index: 1;
+        }
+
+        .timeline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            transform: translateY(100%);
+            animation: timelineAppear 1.5s ease-out forwards;
         }
 
         .particles {
@@ -97,7 +119,7 @@
         }
 
         header h1 {
-            font-size: 5em;
+            font-size: 5.5em;
             font-weight: 800;
             background: linear-gradient(90deg, var(--accent-color), #fff);
             -webkit-background-clip: text;
@@ -106,14 +128,30 @@
             text-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
             letter-spacing: -1px;
             animation: fadeInUp 1s ease-out;
+            position: relative;
+            display: inline-block;
         }
 
-        header p {
+        header h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 6px;
+            background: var(--accent-color);
+            border-radius: 3px;
+            animation: expandLine 1.2s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        header .subtitle {
             color: var(--text-primary);
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 300;
             max-width: 700px;
-            margin: 0 auto 40px;
+            margin: 30px auto 40px;
             animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
         }
@@ -128,7 +166,7 @@
 
         .hero-btn {
             display: inline-block;
-            padding: 16px 40px;
+            padding: 18px 45px;
             background: transparent;
             color: var(--accent-color);
             text-decoration: none;
@@ -136,7 +174,7 @@
             border-radius: 50px;
             transition: all 0.4s ease;
             border: 2px solid var(--accent-color);
-            font-size: 1.1em;
+            font-size: 1.2em;
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -217,7 +255,7 @@
 
         /* --- Secciones --- */
         section {
-            padding: 100px 20px;
+            padding: 120px 20px;
             max-width: 1100px;
             margin: 0 auto;
             text-align: center;
@@ -225,7 +263,7 @@
 
         section h2 {
             margin-bottom: 60px;
-            font-size: 2.8em;
+            font-size: 3em;
             font-weight: 700;
             color: var(--text-primary);
             position: relative;
@@ -238,8 +276,8 @@
             bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 5px;
+            width: 120px;
+            height: 6px;
             background: var(--accent-color);
             border-radius: 3px;
         }
@@ -301,11 +339,16 @@
             color: var(--accent-color);
             position: relative;
             z-index: 1;
+            transition: transform 0.4s ease;
         }
 
         .skill-item:hover .skill-icon {
             transform: translateY(-10px) rotate(5deg);
             box-shadow: 0 10px 30px rgba(88, 166, 255, 0.3);
+        }
+
+        .skill-item:hover .skill-icon i {
+            transform: scale(1.2);
         }
 
         .skill-item span {
@@ -330,6 +373,8 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .servicio:before {
@@ -345,7 +390,7 @@
         }
 
         .servicio:hover {
-            transform: translateY(-15px);
+            transform: translateY(-15px) rotateX(5deg);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -361,7 +406,7 @@
         }
 
         .servicio:hover i {
-            transform: scale(1.2);
+            transform: scale(1.2) rotate(10deg);
         }
         
         .servicio h3 {
@@ -393,10 +438,11 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             overflow: hidden;
             text-align: center;
+            transform-style: preserve-3d;
         }
 
         .plan:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) rotateY(5deg);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -557,10 +603,11 @@
             border: 1px solid rgba(88, 166, 255, 0.2);
             transition: transform 0.4s ease;
             height: 400px;
+            transform-style: preserve-3d;
         }
 
         .portafolio-item:hover {
-            transform: scale(1.03);
+            transform: scale(1.03) rotate(1deg);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -650,6 +697,7 @@
             z-index: 1;
             font-size: 1.2em;
             box-shadow: 0 10px 30px rgba(88, 166, 255, 0.4);
+            transform-style: preserve-3d;
         }
 
         .cta-button:before {
@@ -666,7 +714,7 @@
 
         .cta-button:hover {
             background: var(--accent-hover);
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotateY(10deg);
             box-shadow: 0 15px 40px rgba(88, 166, 255, 0.6);
         }
 
@@ -707,10 +755,11 @@
             flex: 0 0 auto;
             width: 320px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
         }
 
         .testimonio:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) rotateX(3deg);
             border-color: var(--accent-color);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
@@ -788,7 +837,7 @@
 
         .carrusel-btn:hover {
             background: var(--accent-hover);
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(15deg);
         }
 
         .carrusel-indicators {
@@ -834,29 +883,46 @@
         footer .social-icons {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             margin-bottom: 30px;
         }
 
         footer .social-icons a {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: rgba(88, 166, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--text-secondary);
             transition: all 0.4s ease;
             border: 1px solid rgba(88, 166, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer .social-icons a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            z-index: -1;
         }
 
         footer .social-icons a:hover {
-            color: var(--accent-color);
+            color: var(--bg-dark);
             transform: translateY(-5px);
-            background: rgba(88, 166, 255, 0.2);
-            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        footer .social-icons a:hover:before {
+            transform: translateY(0);
         }
         
         footer p {
@@ -882,11 +948,21 @@
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
         
+        @keyframes timelineAppear {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        @keyframes expandLine {
+            from { width: 0; opacity: 0; }
+            to { width: 200px; opacity: 1; }
+        }
+        
         /* --- Media Queries para Móviles --- */
         @media (max-width: 992px) {
-            header h1 { font-size: 3.5em; }
-            header p { font-size: 1.2em; }
-            section h2 { font-size: 2.2em; }
+            header h1 { font-size: 4em; }
+            header .subtitle { font-size: 1.4em; }
+            section h2 { font-size: 2.5em; }
             .planes-grid { grid-template-columns: 1fr; }
             .plan.recomendado { transform: scale(1); }
             .portafolio-grid { grid-template-columns: 1fr; }
@@ -895,7 +971,7 @@
         
         @media (max-width: 768px) {
             header { padding: 120px 20px 80px; }
-            header h1 { font-size: 2.8em; }
+            header h1 { font-size: 3em; }
             nav { gap: 15px; flex-wrap: wrap; }
             .hero-btns { flex-direction: column; align-items: center; }
             .skills-container { gap: 20px; }
@@ -903,13 +979,15 @@
             .skill-icon i { font-size: 2.2rem; }
             .servicios-grid { grid-template-columns: 1fr; }
             .testimonio { min-width: 280px; }
+            footer .social-icons { gap: 20px; }
+            footer .social-icons a { width: 60px; height: 60px; font-size: 1.8rem; }
         }
 
         @media (max-width: 480px) {
-            header h1 { font-size: 2.2em; }
-            header p { font-size: 1em; }
-            section h2 { font-size: 1.8em; margin-bottom: 40px; }
-            section h2::after { width: 70px; height: 4px; }
+            header h1 { font-size: 2.5em; }
+            header .subtitle { font-size: 1.1em; }
+            section h2 { font-size: 2em; margin-bottom: 40px; }
+            section h2::after { width: 80px; height: 4px; }
             .skill-item { width: 120px; }
             .skill-icon { width: 70px; height: 70px; }
             .skill-icon i { font-size: 1.8rem; }
@@ -923,17 +1001,19 @@
     <header>
         <div class="video-background">
             <video autoplay muted loop>
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-blue-light-particles-rotating-in-space-1250-large.mp4" type="video/mp4">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-a-film-editor-working-on-his-computer-43709-large.mp4" type="video/mp4">
             </video>
         </div>
+        <div class="editor-overlay"></div>
+        <div class="timeline"></div>
         <div class="particles" id="particles"></div>
         
         <div class="hero-content">
-            <h1>Transforma tu contenido visual</h1>
-            <p>Edición profesional que eleva tus videos y captura la atención de tu audiencia</p>
+            <h1>Alexis</h1>
+            <p class="subtitle">Editor de video profesional | Transformando ideas en experiencias visuales</p>
             
             <div class="hero-btns">
-                <a href="#portafolio" class="hero-btn primary-btn">Ver Trabajos</a>
+                <a href="#portafolio" class="hero-btn primary-btn">Ver Portafolio</a>
                 <a href="#contacto" class="hero-btn">Contactar Ahora</a>
             </div>
         </div>
@@ -1093,10 +1173,10 @@
     <section id="testimonios">
         <div class="testimonios-container">
             <h2>Lo que dicen mis clientes</h2>
-            <p>18 reseñas de creadores satisfechos con mi trabajo</p>
+            <p>Reseñas de creadores satisfechos con mi trabajo</p>
             
             <div class="carrusel" id="carrusel">
-                <!-- Reseñas se generarán con JavaScript -->
+                <!-- Las reseñas se generarán con JavaScript -->
             </div>
             
             <div class="carrusel-controls">
@@ -1117,12 +1197,6 @@
             </a>
             <a href="https://www.tiktok.com/@alexis_av0" target="_blank" aria-label="TikTok">
                 <i class="bi bi-tiktok"></i>
-            </a>
-            <a href="#" target="_blank" aria-label="YouTube">
-                <i class="bi bi-youtube"></i>
-            </a>
-            <a href="#" target="_blank" aria-label="Behance">
-                <i class="bi bi-behance"></i>
             </a>
         </div>
         <p>© 2025 Alexis | Editor Profesional | Todos los derechos reservados</p>
@@ -1190,66 +1264,6 @@
                 name: "Pedro A.",
                 role: "Emprendedor",
                 text: "Los anuncios que Alexis editó para mi negocio han triplicado nuestras conversiones. Vale cada centavo invertido."
-            },
-            {
-                name: "Ana T.",
-                role: "Chef",
-                text: "Alexis captura perfectamente la esencia de mi cocina en cada video. Su edición hace que mis recetas se vean aún más deliciosas."
-            },
-            {
-                name: "Roberto L.",
-                role: "Coach",
-                text: "La calidad profesional de los videos que Alexis produce para mi curso online ha aumentado significativamente mis ventas. ¡Altamente recomendado!"
-            },
-            {
-                name: "Daniela C.",
-                role: "Fotógrafa",
-                text: "Como fotógrafa, soy muy exigente con la estética. Alexis superó mis expectativas con su sensibilidad visual y atención al detalle."
-            },
-            {
-                name: "Miguel Á.",
-                role: "Podcaster",
-                text: "Alexis convirtió mi podcast en video con una calidad increíble. Sus gráficos y edición hacen que el contenido sea mucho más atractivo."
-            },
-            {
-                name: "Valentina R.",
-                role: "Artista",
-                text: "El video de mi exposición de arte editado por Alexis capturó perfectamente la esencia de mi obra. Una verdadera pieza de arte en sí mismo."
-            },
-            {
-                name: "Fernando S.",
-                role: "Agente de marketing",
-                text: "Trabajo con varios editores y Alexis es de lejos el mejor. Su comprensión del storytelling y ritmo es incomparable."
-            },
-            {
-                name: "Gabriela M.",
-                role: "Educadora",
-                text: "Los videos educativos que Alexis editó para mi plataforma son claros, atractivos y mantienen la atención de mis estudiantes. ¡Excelente trabajo!"
-            },
-            {
-                name: "Luis P.",
-                role: "Vlogger de viajes",
-                text: "Alexis transforma horas de material de viaje en historias cinematográficas. Sus transiciones y corrección de color son mágicas."
-            },
-            {
-                name: "Claudia V.",
-                role: "Diseñadora",
-                text: "El video de presentación de mi portafolio creado por Alexis ha sido fundamental para conseguir nuevos clientes. Un trabajo impecable."
-            },
-            {
-                name: "Héctor R.",
-                role: "Gamer",
-                text: "Mis gameplays con la edición de Alexis son otro nivel. Sus efectos y sincronización con la música son espectaculares."
-            },
-            {
-                name: "Paula M.",
-                role: "Terapeuta",
-                text: "Los videos de meditación que Alexis edita transmiten perfectamente la calma y serenidad que busco. Un trabajo sensible y profesional."
-            },
-            {
-                name: "Andrés C.",
-                role: "Emprendedor tech",
-                text: "El video promocional de nuestra app editado por Alexis fue clave para nuestra ronda de financiación. Claridad, impacto y profesionalismo."
             }
         ];
         
