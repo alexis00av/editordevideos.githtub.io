@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alexis | Editor Profesional</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <style>
         /* --- Paleta de Colores y Variables --- */
         :root {
@@ -20,6 +20,8 @@
             --accent-hover: #79c0ff;
             --premium-gradient: linear-gradient(135deg, #8a2be2, #58a6ff);
             --gold: #ffd700;
+            --whatsapp: #25D366;
+            --email: #D44638;
         }
 
         * {
@@ -31,11 +33,24 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-dark);
+            background: linear-gradient(135deg, #0a0d12, #0d1117);
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(88, 166, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* --- Encabezado Mejorado --- */
@@ -49,12 +64,6 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
         }
 
         .video-background {
@@ -90,17 +99,6 @@
             z-index: 1;
         }
 
-        .timeline {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            transform: translateY(100%);
-            animation: timelineAppear 1.5s ease-out forwards;
-        }
-
         .particles {
             position: absolute;
             top: 0;
@@ -118,6 +116,13 @@
             animation: float 15s infinite linear;
         }
 
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
         header h1 {
             font-size: 5.5em;
             font-weight: 800;
@@ -127,9 +132,9 @@
             margin-bottom: 0.5rem;
             text-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
             letter-spacing: -1px;
-            animation: fadeInUp 1s ease-out;
             position: relative;
             display: inline-block;
+            font-family: 'Montserrat', sans-serif;
         }
 
         header h1:after {
@@ -178,6 +183,7 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.2);
         }
 
         .hero-btn:before {
@@ -194,6 +200,8 @@
 
         .hero-btn:hover {
             color: var(--bg-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.4);
         }
 
         .hero-btn:hover:before {
@@ -208,6 +216,18 @@
 
         .primary-btn:before {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Flecha animada */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            font-size: 2rem;
+            color: var(--accent-color);
+            cursor: pointer;
         }
 
         /* --- Barra de Navegación --- */
@@ -228,7 +248,7 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             position: relative;
             padding: 5px 0;
             font-size: 1.1em;
@@ -253,12 +273,52 @@
             width: 100%;
         }
 
+        /* Selector de idioma */
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0 30px;
+            z-index: 1000;
+            animation: fadeInUp 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        .lang-btn {
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            color: var(--text-primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+        }
+
+        .lang-btn:hover {
+            background: rgba(88, 166, 255, 0.3);
+        }
+
         /* --- Secciones --- */
         section {
             padding: 120px 20px;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         section h2 {
@@ -268,6 +328,7 @@
             color: var(--text-primary);
             position: relative;
             display: inline-block;
+            font-family: 'Montserrat', sans-serif;
         }
 
         section h2::after {
@@ -297,7 +358,7 @@
             flex-wrap: wrap;
             gap: 40px;
             margin-top: 60px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 60px auto 0;
         }
 
@@ -321,6 +382,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.2);
         }
 
         .skill-icon:before {
@@ -344,17 +406,12 @@
 
         .skill-item:hover .skill-icon {
             transform: translateY(-10px) rotate(5deg);
-            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.4);
         }
 
         .skill-item:hover .skill-icon i {
             transform: scale(1.2);
-        }
-
-        .skill-item span {
-            font-size: 1.1em;
-            color: var(--text-primary);
-            font-weight: 500;
+            animation: iconPulse 0.8s ease-out;
         }
 
         /* --- Tarjetas de Servicios --- */
@@ -370,11 +427,11 @@
             padding: 40px 30px;
             border-radius: 20px;
             text-align: center;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1);
         }
 
         .servicio:before {
@@ -390,8 +447,9 @@
         }
 
         .servicio:hover {
-            transform: translateY(-15px) rotateX(5deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(88, 166, 255, 0.3);
+            z-index: 2;
         }
 
         .servicio:hover:before {
@@ -402,11 +460,12 @@
             font-size: 4rem;
             margin-bottom: 25px;
             color: var(--accent-color);
-            transition: transform 0.4s ease;
+            transition: all 0.4s ease;
         }
 
         .servicio:hover i {
-            transform: scale(1.2) rotate(10deg);
+            transform: scale(1.2);
+            animation: iconPulse 0.8s ease-out;
         }
         
         .servicio h3 {
@@ -435,22 +494,22 @@
             border-radius: 20px;
             padding: 50px 30px;
             position: relative;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: all 0.4s ease;
             overflow: hidden;
             text-align: center;
-            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .plan:hover {
-            transform: translateY(-10px) rotateY(5deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(88, 166, 255, 0.3);
         }
 
         .plan.recomendado {
             border: 2px solid var(--accent-color);
             transform: scale(1.03);
             z-index: 2;
-            box-shadow: 0 20px 40px rgba(88, 166, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(88, 166, 255, 0.4);
         }
 
         .plan.recomendado::before {
@@ -534,6 +593,9 @@
             transition: all 0.4s ease;
             border: 2px solid var(--accent-color);
             font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         .plan .cta-plan:hover {
@@ -601,14 +663,16 @@
             overflow: hidden;
             cursor: pointer;
             border: 1px solid rgba(88, 166, 255, 0.2);
-            transition: transform 0.4s ease;
+            transition: all 0.4s ease;
             height: 400px;
-            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1);
         }
 
         .portafolio-item:hover {
-            transform: scale(1.03) rotate(1deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(88, 166, 255, 0.3);
+            z-index: 2;
         }
 
         .portafolio-item img {
@@ -664,6 +728,7 @@
             max-width: 900px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         #contacto:before {
@@ -683,43 +748,109 @@
             color: var(--text-primary);
         }
 
-        .cta-button {
-            display: inline-block;
-            padding: 18px 50px;
-            background: var(--accent-color);
-            color: var(--bg-dark);
+        .contact-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 18px 40px;
+            background: transparent;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             border-radius: 50px;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
             z-index: 1;
             font-size: 1.2em;
-            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.4);
-            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid;
         }
-
-        .cta-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.6s ease;
-            z-index: -1;
+        
+        .whatsapp-btn {
+            color: var(--whatsapp);
+            border-color: var(--whatsapp);
         }
-
-        .cta-button:hover {
+        
+        .whatsapp-btn:hover {
+            background: var(--whatsapp);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        }
+        
+        .email-btn {
+            color: var(--email);
+            border-color: var(--email);
+        }
+        
+        .email-btn:hover {
+            background: var(--email);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 70, 56, 0.3);
+        }
+        
+        .contact-btn i {
+            margin-right: 10px;
+            font-size: 1.4em;
+        }
+        
+        /* Sección de Recursos */
+        #recursos {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 80px 40px;
+            margin: 60px auto;
+            max-width: 900px;
+        }
+        
+        #recursos .resource-container {
+            background: rgba(13, 17, 23, 0.9);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .resource-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(88, 166, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 2px solid var(--accent-color);
+            font-size: 3.5rem;
+            color: var(--accent-color);
+        }
+        
+        .resource-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            margin-top: 20px;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3);
+        }
+        
+        .resource-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(88, 166, 255, 0.4);
             background: var(--accent-hover);
-            transform: translateY(-5px) rotateY(10deg);
-            box-shadow: 0 15px 40px rgba(88, 166, 255, 0.6);
-        }
-
-        .cta-button:hover:before {
-            left: 100%;
         }
         
         /* --- Carrusel de Reseñas --- */
@@ -731,16 +862,14 @@
         }
 
         .testimonios-container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             position: relative;
         }
 
-        .carrusel {
-            display: flex;
-            transition: transform 0.6s ease-in-out;
-            gap: 30px;
-            padding: 30px 0;
+        .swiper {
+            width: 100%;
+            padding: 50px 0;
         }
 
         .testimonio {
@@ -752,16 +881,16 @@
             text-align: left;
             transition: all 0.4s ease;
             position: relative;
-            flex: 0 0 auto;
-            width: 320px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transform-style: preserve-3d;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .testimonio:hover {
-            transform: translateY(-10px) rotateX(3deg);
+            transform: translateY(-10px);
             border-color: var(--accent-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(88, 166, 255, 0.3);
         }
 
         .testimonio-header {
@@ -803,6 +932,12 @@
             color: var(--gold);
             margin-bottom: 15px;
             font-size: 1.2em;
+            display: flex;
+            gap: 3px;
+        }
+
+        .estrellas .bi-star {
+            color: var(--text-secondary);
         }
 
         .testimonio-text {
@@ -812,53 +947,41 @@
             font-size: 1.1em;
         }
 
-        .carrusel-controls {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .carrusel-btn {
-            background: var(--accent-color);
-            color: var(--bg-dark);
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.4s ease;
-            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3);
-        }
-
-        .carrusel-btn:hover {
-            background: var(--accent-hover);
-            transform: scale(1.1) rotate(15deg);
-        }
-
-        .carrusel-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
+        .swiper-pagination {
+            position: relative;
             margin-top: 30px;
         }
 
-        .indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+        .swiper-pagination-bullet {
             background: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.4s ease;
+            opacity: 0.5;
+            width: 12px;
+            height: 12px;
+            transition: all 0.3s ease;
         }
 
-        .indicator.active {
+        .swiper-pagination-bullet-active {
             background: var(--accent-color);
-            transform: scale(1.3);
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--accent-color);
+            background: rgba(88, 166, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 1.5rem;
+        }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background: var(--accent-color);
+            color: var(--bg-dark);
         }
 
         /* --- Footer --- */
@@ -901,6 +1024,7 @@
             border: 1px solid rgba(88, 166, 255, 0.2);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         footer .social-icons a:before {
@@ -919,6 +1043,7 @@
         footer .social-icons a:hover {
             color: var(--bg-dark);
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(88, 166, 255, 0.3);
         }
 
         footer .social-icons a:hover:before {
@@ -948,17 +1073,24 @@
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
         
-        @keyframes timelineAppear {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        
         @keyframes expandLine {
             from { width: 0; opacity: 0; }
             to { width: 200px; opacity: 1; }
         }
         
-        /* --- Media Queries para Móviles --- */
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1.2); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-7px);}
+        }
+
+        /* Media Queries para Móviles */
         @media (max-width: 992px) {
             header h1 { font-size: 4em; }
             header .subtitle { font-size: 1.4em; }
@@ -981,6 +1113,16 @@
             .testimonio { min-width: 280px; }
             footer .social-icons { gap: 20px; }
             footer .social-icons a { width: 60px; height: 60px; font-size: 1.8rem; }
+            .swiper-button-next, .swiper-button-prev {
+                display: none;
+            }
+            .contact-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            .resource-container {
+                padding: 25px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -992,6 +1134,8 @@
             .skill-icon { width: 70px; height: 70px; }
             .skill-icon i { font-size: 1.8rem; }
             .skill-item span { font-size: 1em; }
+            #contacto { padding: 50px 20px; }
+            .language-selector { margin: 15px 0 25px; }
         }
 
     </style>
@@ -1005,17 +1149,27 @@
             </video>
         </div>
         <div class="editor-overlay"></div>
-        <div class="timeline"></div>
         <div class="particles" id="particles"></div>
         
         <div class="hero-content">
             <h1>Alexis</h1>
             <p class="subtitle">Editor de video profesional | Transformando ideas en experiencias visuales</p>
             
+            <!-- Selector de idioma movido aquí -->
+            <div class="language-selector">
+                <div class="lang-btn active" data-lang="es">ES</div>
+                <div class="lang-btn" data-lang="en">EN</div>
+            </div>
+            
             <div class="hero-btns">
                 <a href="#portafolio" class="hero-btn primary-btn">Ver Portafolio</a>
                 <a href="#contacto" class="hero-btn">Contactar Ahora</a>
             </div>
+        </div>
+        
+        <!-- Flecha animada para indicar scroll -->
+        <div class="scroll-indicator" onclick="document.querySelector('#sobre-mi').scrollIntoView({ behavior: 'smooth' })">
+            <i class="bi bi-chevron-down"></i>
         </div>
     </header>
 
@@ -1024,6 +1178,8 @@
         <a href="#servicios">Servicios</a>
         <a href="#precios">Precios</a>
         <a href="#portafolio">Portafolio</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#testimonios">Reseñas</a>
         <a href="#contacto">Contacto</a>
     </nav>
 
@@ -1049,6 +1205,12 @@
                     <i class="bi bi-lightning"></i>
                 </div>
                 <span>Motion Graphics</span>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">
+                    <i class="bi bi-mic"></i>
+                </div>
+                <span>Audio Profesional</span>
             </div>
         </div>
     </section>
@@ -1089,7 +1251,7 @@
                     <li><i class="bi bi-check-circle"></i> 1 revisión</li>
                     <li><i class="bi bi-check-circle"></i> Entrega en 3 días</li>
                 </ul>
-                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+                <button class="cta-plan" onclick="selectPlan('Básico')">Elegir Plan</button>
             </div>
             
             <div class="plan recomendado">
@@ -1104,7 +1266,7 @@
                     <li><i class="bi bi-check-circle"></i> Diseño básico de sonido</li>
                     <li><i class="bi bi-check-circle"></i> Entrega en 2 días</li>
                 </ul>
-                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+                <button class="cta-plan" onclick="selectPlan('Profesional')">Elegir Plan</button>
             </div>
             
             <div class="plan premium">
@@ -1120,7 +1282,7 @@
                     <li><i class="bi bi-check-circle"></i> Entrega en 24-48 horas</li>
                     <li><i class="bi bi-check-circle"></i> Soporte prioritario</li>
                 </ul>
-                <a href="#contacto" class="cta-plan">Elegir Plan</a>
+                <button class="cta-plan" onclick="selectPlan('Premium')">Elegir Plan</button>
             </div>
         </div>
         
@@ -1163,30 +1325,52 @@
         </div>
     </section>
     
-    <section id="contacto">
-        <h2>¿Listo para comenzar?</h2>
-        <p>Hablemos de tu próximo proyecto. Envíame un mensaje y trabajemos juntos para crear contenido que destaque.</p>
-        <a href="mailto:alexiseditor@correo.com" class="cta-button">¡Contáctame Ahora!</a>
+    <!-- Sección de Recursos -->
+    <section id="recursos">
+        <h2>Recursos para Clientes</h2>
+        <p>Materiales y herramientas útiles para optimizar tu experiencia de trabajo</p>
+        
+        <div class="resource-container">
+            <div class="resource-icon">
+                <i class="bi bi-folder-fill"></i>
+            </div>
+            <h3>Biblioteca de Recursos</h3>
+            <p>Accede a nuestra colección de plantillas, efectos de sonido, transiciones y otros materiales profesionales que puedes utilizar en tus proyectos.</p>
+            <p>Todo el material está organizado y listo para descargar.</p>
+            <a href="https://drive.google.com/drive/folders/119ADrFhMUzdc1t1iz_gDUe3KxaiB48RL?usp=sharing" target="_blank" class="resource-btn">
+                <i class="bi bi-box-arrow-up-right"></i> Acceder a Recursos
+            </a>
+        </div>
     </section>
     
-    <!-- Sección de Testimonios tipo Carrusel -->
+    <!-- Sección de Testimonios con Swiper -->
     <section id="testimonios">
         <div class="testimonios-container">
             <h2>Lo que dicen mis clientes</h2>
             <p>Reseñas de creadores satisfechos con mi trabajo</p>
             
-            <div class="carrusel" id="carrusel">
-                <!-- Las reseñas se generarán con JavaScript -->
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <!-- Las reseñas se generarán con JavaScript -->
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
-            
-            <div class="carrusel-controls">
-                <button class="carrusel-btn" id="prevBtn"><i class="bi bi-chevron-left"></i></button>
-                <button class="carrusel-btn" id="nextBtn"><i class="bi bi-chevron-right"></i></button>
-            </div>
-            
-            <div class="carrusel-indicators" id="indicators">
-                <!-- Los indicadores se generarán con JavaScript -->
-            </div>
+        </div>
+    </section>
+    
+    <section id="contacto">
+        <h2>¿Listo para comenzar?</h2>
+        <p>Hablemos de tu próximo proyecto. Envíame un mensaje y trabajemos juntos para crear contenido que destaque.</p>
+        
+        <div class="contact-btns">
+            <a id="whatsappLink" href="https://wa.me/?text=Hola%20Alexis,%20estoy%20interesado%20en%20tus%20servicios%20de%20edición." class="contact-btn whatsapp-btn" target="_blank">
+                <i class="bi bi-whatsapp"></i> WhatsApp
+            </a>
+            <a id="emailLink" href="mailto:alexiseditor@correo.com?subject=Consulta%20sobre%20servicios%20de%20edición" class="contact-btn email-btn">
+                <i class="bi bi-envelope"></i> Enviar Email
+            </a>
         </div>
     </section>
 
@@ -1202,7 +1386,42 @@
         <p>© 2025 Alexis | Editor Profesional | Todos los derechos reservados</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // Variable para almacenar el plan seleccionado
+        let selectedPlan = "";
+        
+        // Función para seleccionar un plan
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            
+            // Actualizar los enlaces de contacto con el plan seleccionado
+            const whatsappLink = document.getElementById('whatsappLink');
+            const emailLink = document.getElementById('emailLink');
+            
+            // Mensaje para WhatsApp
+            const whatsappMessage = encodeURIComponent(
+                `Hola Alexis, estoy interesado en el plan ${plan}. ¿Podrías darme más información?`
+            );
+            whatsappLink.href = `https://wa.me/?text=${whatsappMessage}`;
+            
+            // Mensaje para correo
+            const emailSubject = encodeURIComponent(`Consulta sobre plan ${plan}`);
+            const emailBody = encodeURIComponent(
+                `Hola Alexis,\n\nEstoy interesado en el plan ${plan}. ¿Podrías darme más información?\n\nSaludos.`
+            );
+            emailLink.href = `mailto:alexiseditor@correo.com?subject=${emailSubject}&body=${emailBody}`;
+            
+            // Desplazar a la sección de contacto
+            document.querySelector('#contacto').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Mostrar mensaje de confirmación
+            alert(`Has seleccionado el plan ${plan}. Serás redirigido a la sección de contacto.`);
+        }
+        
         // Crear partículas animadas
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -1233,123 +1452,528 @@
             }
         }
         
-        // Generar reseñas de clientes
-        const testimonios = [
-            {
-                name: "María G.",
-                role: "Creadora de contenido",
-                text: "Alexis transformó completamente mis videos. Su trabajo en ritmo y narrativa hizo que mi contenido destaque. ¡Mis visualizaciones aumentaron un 200%!"
+        // Sistema de traducción
+        const translations = {
+            es: {
+                title: "Alexis | Editor Profesional",
+                headerTitle: "Alexis",
+                headerSubtitle: "Editor de video profesional | Transformando ideas en experiencias visuales",
+                portfolioBtn: "Ver Portafolio",
+                contactBtn: "Contactar Ahora",
+                navAbout: "Sobre mí",
+                navServices: "Servicios",
+                navPricing: "Precios",
+                navPortfolio: "Portafolio",
+                navTestimonials: "Reseñas",
+                navResources: "Recursos",
+                navContact: "Contacto",
+                aboutTitle: "Hola, soy Alexis",
+                aboutText: "Con más de 5 años de experiencia en la industria audiovisual, he trabajado con creadores de contenido, marcas y emprendedores para transformar sus ideas en piezas visuales impactantes. Mi enfoque combina técnica avanzada, creatividad estratégica y una atención meticulosa al detalle para garantizar que cada proyecto supere las expectativas.",
+                skills: [
+                    {name: "Edición Profesional", icon: "bi-camera-reels"},
+                    {name: "Diseño de Sonido", icon: "bi-music-note-beamed"},
+                    {name: "Motion Graphics", icon: "bi-lightning"},
+                    {name: "Audio Profesional", icon: "bi-mic"}
+                ],
+                servicesTitle: "Mis Servicios",
+                services: [
+                    {
+                        icon: "bi-film",
+                        title: "Edición de Video Avanzada",
+                        text: "Desde cortes precisos hasta corrección de color profesional, transformo tu material en piezas visuales pulidas y coherentes que transmiten tu mensaje con claridad y estilo."
+                    },
+                    {
+                        icon: "bi-instagram",
+                        title: "Contenido para Redes Sociales",
+                        text: "Videos cortos, dinámicos y optimizados para Reels, TikTok y Shorts, diseñados para captar la atención y aumentar el engagement con tu audiencia."
+                    },
+                    {
+                        icon: "bi-rocket-takeoff",
+                        title: "Videos Publicitarios",
+                        text: "Anuncios persuasivos que destacan tu producto o servicio y llevan a la acción. Combinamos storytelling emocional con llamados a acción efectivos."
+                    }
+                ],
+                pricingTitle: "Planes y Precios",
+                pricingText: "Opciones flexibles diseñadas para adaptarse a tus necesidades creativas y presupuesto.",
+                plans: [
+                    {
+                        name: "Básico",
+                        price: "$99",
+                        features: [
+                            "Hasta 5 minutos de duración",
+                            "Edición estándar",
+                            "Corrección de color básica",
+                            "1 revisión",
+                            "Entrega en 3 días"
+                        ]
+                    },
+                    {
+                        name: "Profesional",
+                        price: "$199",
+                        features: [
+                            "Hasta 10 minutos de duración",
+                            "Edición avanzada",
+                            "Corrección de color profesional",
+                            "2 revisiones",
+                            "Transiciones y efectos",
+                            "Diseño básico de sonido",
+                            "Entrega en 2 días"
+                        ]
+                    },
+                    {
+                        name: "Premium",
+                        price: "$349",
+                        features: [
+                            "Duración ilimitada",
+                            "Edición profesional completa",
+                            "Motion graphics y animaciones",
+                            "Diseño de sonido profesional",
+                            "Subtítulos y gráficos",
+                            "Revisiones ilimitadas",
+                            "Entrega en 24-48 horas",
+                            "Soporte prioritario"
+                        ]
+                    }
+                ],
+                notesTitle: "Notas importantes",
+                notes: [
+                    "Los precios son por video editado y pueden variar según la complejidad del proyecto",
+                    "Ofrezco descuentos especiales para paquetes de múltiples videos",
+                    "Todos los planes incluyen derechos de uso del contenido final",
+                    "Garantía de satisfacción: si no estás contento con el resultado, realizaré revisiones sin costo adicional",
+                    "Proyectos complejos o especializados pueden requerir un presupuesto personalizado"
+                ],
+                portfolioTitle: "Trabajos Destacados",
+                portfolioItems: [
+                    {title: "Campaña para Marca Fitness", desc: "Edición y Post-producción"},
+                    {title: "Reel Viral para Creador", desc: "Edición dinámica y subtítulos"},
+                    {title: "Anuncio para App Móvil", desc: "Motion Graphics y edición"}
+                ],
+                resourcesTitle: "Recursos para Clientes",
+                resourcesText: "Materiales y herramientas útiles para optimizar tu experiencia de trabajo",
+                testimonialsTitle: "Lo que dicen mis clientes",
+                testimonialsText: "Reseñas de creadores satisfechos con mi trabajo",
+                testimonials: [
+                    {
+                        name: "María G.",
+                        role: "Creadora de contenido",
+                        text: "Alexis transformó completamente mis videos. Su trabajo en ritmo y narrativa hizo que mi contenido destaque. ¡Mis visualizaciones aumentaron un 200%!",
+                        stars: 5
+                    },
+                    {
+                        name: "Carlos R.",
+                        role: "Empresario",
+                        text: "Contraté a Alexis para los videos de mi startup. El resultado superó todas mis expectativas. Profesional, creativo y cumple plazos.",
+                        stars: 4
+                    },
+                    {
+                        name: "Laura V.",
+                        role: "Influencer fitness",
+                        text: "Los reels que Alexis edita para mí siempre se vuelven virales. Entiende perfectamente mi estilo y sabe cómo hacer que el contenido sea adictivo.",
+                        stars: 5
+                    },
+                    {
+                        name: "Juan M.",
+                        role: "Músico",
+                        text: "El trabajo de Alexis en mi último videoclip fue excepcional. Su oído musical combinado con habilidades de edición creó algo mágico.",
+                        stars: 5
+                    },
+                    {
+                        name: "Sofía P.",
+                        role: "Youtuber",
+                        text: "Desde que trabajo con Alexis, mi canal ha crecido exponencialmente. Su edición hace que mis videos sean mucho más atractivos y profesionales.",
+                        stars: 4
+                    },
+                    {
+                        name: "Pedro A.",
+                        role: "Emprendedor",
+                        text: "Los anuncios que Alexis editó para mi negocio han triplicado nuestras conversiones. Vale cada centavo invertido.",
+                        stars: 5
+                    }
+                ],
+                contactTitle: "¿Listo para comenzar?",
+                contactText: "Hablemos de tu próximo proyecto. Envíame un mensaje y trabajemos juntos para crear contenido que destaque.",
+                footerText: "© 2025 Alexis | Editor Profesional | Todos los derechos reservados"
             },
-            {
-                name: "Carlos R.",
-                role: "Empresario",
-                text: "Contraté a Alexis para los videos de mi startup. El resultado superó todas mis expectativas. Profesional, creativo y cumple plazos."
-            },
-            {
-                name: "Laura V.",
-                role: "Influencer fitness",
-                text: "Los reels que Alexis edita para mí siempre se vuelven virales. Entiende perfectamente mi estilo y sabe cómo hacer que el contenido sea adictivo."
-            },
-            {
-                name: "Juan M.",
-                role: "Músico",
-                text: "El trabajo de Alexis en mi último videoclip fue excepcional. Su oído musical combinado con habilidades de edición creó algo mágico."
-            },
-            {
-                name: "Sofía P.",
-                role: "Youtuber",
-                text: "Desde que trabajo con Alexis, mi canal ha crecido exponencialmente. Su edición hace que mis videos sean mucho más atractivos y profesionales."
-            },
-            {
-                name: "Pedro A.",
-                role: "Emprendedor",
-                text: "Los anuncios que Alexis editó para mi negocio han triplicado nuestras conversiones. Vale cada centavo invertido."
+            en: {
+                title: "Alexis | Professional Editor",
+                headerTitle: "Alexis",
+                headerSubtitle: "Professional Video Editor | Transforming ideas into visual experiences",
+                portfolioBtn: "View Portfolio",
+                contactBtn: "Contact Now",
+                navAbout: "About Me",
+                navServices: "Services",
+                navPricing: "Pricing",
+                navPortfolio: "Portfolio",
+                navTestimonials: "Testimonials",
+                navResources: "Resources",
+                navContact: "Contact",
+                aboutTitle: "Hello, I'm Alexis",
+                aboutText: "With over 5 years of experience in the audiovisual industry, I've worked with content creators, brands, and entrepreneurs to transform their ideas into impactful visual pieces. My approach combines advanced technique, strategic creativity, and meticulous attention to detail to ensure every project exceeds expectations.",
+                skills: [
+                    {name: "Professional Editing", icon: "bi-camera-reels"},
+                    {name: "Sound Design", icon: "bi-music-note-beamed"},
+                    {name: "Motion Graphics", icon: "bi-lightning"},
+                    {name: "Professional Audio", icon: "bi-mic"}
+                ],
+                servicesTitle: "My Services",
+                services: [
+                    {
+                        icon: "bi-film",
+                        title: "Advanced Video Editing",
+                        text: "From precise cuts to professional color correction, I transform your footage into polished and coherent visual pieces that convey your message with clarity and style."
+                    },
+                    {
+                        icon: "bi-instagram",
+                        title: "Social Media Content",
+                        text: "Short, dynamic videos optimized for Reels, TikTok, and Shorts, designed to capture attention and increase engagement with your audience."
+                    },
+                    {
+                        icon: "bi-rocket-takeoff",
+                        title: "Advertising Videos",
+                        text: "Persuasive ads that highlight your product or service and drive action. We combine emotional storytelling with effective calls to action."
+                    }
+                ],
+                pricingTitle: "Plans and Pricing",
+                pricingText: "Flexible options designed to fit your creative needs and budget.",
+                plans: [
+                    {
+                        name: "Basic",
+                        price: "$99",
+                        features: [
+                            "Up to 5 minutes duration",
+                            "Standard editing",
+                            "Basic color correction",
+                            "1 revision",
+                            "Delivery in 3 days"
+                        ]
+                    },
+                    {
+                        name: "Professional",
+                        price: "$199",
+                        features: [
+                            "Up to 10 minutes duration",
+                            "Advanced editing",
+                            "Professional color correction",
+                            "2 revisions",
+                            "Transitions and effects",
+                            "Basic sound design",
+                            "Delivery in 2 days"
+                        ]
+                    },
+                    {
+                        name: "Premium",
+                        price: "$349",
+                        features: [
+                            "Unlimited duration",
+                            "Complete professional editing",
+                            "Motion graphics and animations",
+                            "Professional sound design",
+                            "Subtitles and graphics",
+                            "Unlimited revisions",
+                            "Delivery in 24-48 hours",
+                            "Priority support"
+                        ]
+                    }
+                ],
+                notesTitle: "Important Notes",
+                notes: [
+                    "Prices are per edited video and may vary based on project complexity",
+                    "Special discounts available for multiple video packages",
+                    "All plans include usage rights for the final content",
+                    "Satisfaction guarantee: if you're not happy with the result, I'll make revisions at no additional cost",
+                    "Complex or specialized projects may require a custom quote"
+                ],
+                portfolioTitle: "Featured Works",
+                portfolioItems: [
+                    {title: "Campaign for Fitness Brand", desc: "Editing and Post-production"},
+                    {title: "Viral Reel for Creator", desc: "Dynamic editing and subtitles"},
+                    {title: "Ad for Mobile App", desc: "Motion Graphics and editing"}
+                ],
+                resourcesTitle: "Client Resources",
+                resourcesText: "Useful materials and tools to optimize your work experience",
+                testimonialsTitle: "What My Clients Say",
+                testimonialsText: "Reviews from satisfied creators",
+                testimonials: [
+                    {
+                        name: "María G.",
+                        role: "Content Creator",
+                        text: "Alexis completely transformed my videos. His work on rhythm and narrative made my content stand out. My views increased by 200%!",
+                        stars: 5
+                    },
+                    {
+                        name: "Carlos R.",
+                        role: "Entrepreneur",
+                        text: "I hired Alexis for my startup's videos. The result exceeded all my expectations. Professional, creative, and meets deadlines.",
+                        stars: 4
+                    },
+                    {
+                        name: "Laura V.",
+                        role: "Fitness Influencer",
+                        text: "The reels Alexis edits for me always go viral. He perfectly understands my style and knows how to make content addictive.",
+                        stars: 5
+                    },
+                    {
+                        name: "Juan M.",
+                        role: "Musician",
+                        text: "Alexis' work on my last music video was exceptional. His musical ear combined with editing skills created something magical.",
+                        stars: 5
+                    },
+                    {
+                        name: "Sofía P.",
+                        role: "YouTuber",
+                        text: "Since I started working with Alexis, my channel has grown exponentially. His editing makes my videos much more attractive and professional.",
+                        stars: 4
+                    },
+                    {
+                        name: "Pedro A.",
+                        role: "Business Owner",
+                        text: "The ads Alexis edited for my business have tripled our conversions. Worth every penny invested.",
+                        stars: 5
+                    }
+                ],
+                contactTitle: "Ready to get started?",
+                contactText: "Let's talk about your next project. Send me a message and let's work together to create standout content.",
+                footerText: "© 2025 Alexis | Professional Editor | All rights reserved"
             }
-        ];
+        };
         
-        // Carrusel de testimonios
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
+        // Variables globales
+        let testimonialSwiper;
+        
+        // Función para generar estrellas según la calificación
+        function generateStars(count) {
+            let starsHTML = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < count) {
+                    starsHTML += '<i class="bi bi-star-fill"></i>';
+                } else {
+                    starsHTML += '<i class="bi bi-star"></i>';
+                }
+            }
+            return starsHTML;
+        }
+        
+        // Función para generar testimonios en el carrusel
+        function generateTestimonials(testimonials) {
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+            swiperWrapper.innerHTML = '';
             
-            const carrusel = document.getElementById('carrusel');
-            const indicatorsContainer = document.getElementById('indicators');
-            
-            // Generar testimonios
-            testimonios.forEach(testimonio => {
-                const testimonioEl = document.createElement('div');
-                testimonioEl.classList.add('testimonio');
+            testimonials.forEach(testimonio => {
+                const slide = document.createElement('div');
+                slide.classList.add('swiper-slide');
                 
                 // Primera letra del nombre para el avatar
                 const firstLetter = testimonio.name.charAt(0);
                 
-                testimonioEl.innerHTML = `
-                    <div class="testimonio-header">
-                        <div class="testimonio-avatar">${firstLetter}</div>
-                        <div class="testimonio-info">
-                            <h4>${testimonio.name}</h4>
-                            <p>${testimonio.role}</p>
+                slide.innerHTML = `
+                    <div class="testimonio">
+                        <div class="testimonio-header">
+                            <div class="testimonio-avatar">${firstLetter}</div>
+                            <div class="testimonio-info">
+                                <h4>${testimonio.name}</h4>
+                                <p>${testimonio.role}</p>
+                            </div>
                         </div>
+                        <div class="estrellas">
+                            ${generateStars(testimonio.stars)}
+                        </div>
+                        <p class="testimonio-text">"${testimonio.text}"</p>
                     </div>
-                    <div class="estrellas">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                    </div>
-                    <p class="testimonio-text">"${testimonio.text}"</p>
                 `;
                 
-                carrusel.appendChild(testimonioEl);
+                swiperWrapper.appendChild(slide);
             });
             
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            
-            const testimoniosEl = document.querySelectorAll('.testimonio');
-            const testimoniosPerPage = 3;
-            const totalPages = Math.ceil(testimoniosEl.length / testimoniosPerPage);
-            let currentPage = 0;
-            
-            // Crear indicadores
-            for (let i = 0; i < totalPages; i++) {
-                const indicator = document.createElement('div');
-                indicator.classList.add('indicator');
-                if (i === 0) indicator.classList.add('active');
-                indicator.dataset.page = i;
-                indicator.addEventListener('click', () => goToPage(i));
-                indicatorsContainer.appendChild(indicator);
+            // Si ya existe un swiper, lo destruimos y recreamos
+            if (testimonialSwiper) {
+                testimonialSwiper.destroy();
             }
             
-            // Función para actualizar el carrusel
-            function updateCarrusel() {
-                const scrollPosition = currentPage * testimoniosEl[0].offsetWidth * testimoniosPerPage;
-                carrusel.style.transform = `translateX(-${scrollPosition}px)`;
+            // Inicializar Swiper
+            testimonialSwiper = new Swiper('.swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+        }
+        
+        // Función para cambiar el idioma
+        function changeLanguage(lang) {
+            const langData = translations[lang];
+            
+            // Actualizar elementos de la página
+            document.title = langData.title;
+            document.querySelector('header h1').textContent = langData.headerTitle;
+            document.querySelector('header .subtitle').textContent = langData.headerSubtitle;
+            document.querySelector('.primary-btn').textContent = langData.portfolioBtn;
+            document.querySelector('.hero-btn:not(.primary-btn)').textContent = langData.contactBtn;
+            
+            // Actualizar navegación
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks[0].textContent = langData.navAbout;
+            navLinks[1].textContent = langData.navServices;
+            navLinks[2].textContent = langData.navPricing;
+            navLinks[3].textContent = langData.navPortfolio;
+            navLinks[4].textContent = langData.navTestimonials;
+            navLinks[5].textContent = langData.navResources;
+            navLinks[6].textContent = langData.navContact;
+            
+            // Actualizar sección sobre mí
+            document.querySelector('#sobre-mi h2').textContent = langData.aboutTitle;
+            document.querySelector('#sobre-mi p').textContent = langData.aboutText;
+            
+            // Actualizar habilidades
+            const skills = document.querySelectorAll('.skill-item span');
+            langData.skills.forEach((skill, index) => {
+                skills[index].textContent = skill.name;
+            });
+            
+            // Actualizar servicios
+            document.querySelector('#servicios h2').textContent = langData.servicesTitle;
+            const services = document.querySelectorAll('.servicio');
+            langData.services.forEach((service, index) => {
+                services[index].querySelector('h3').textContent = service.title;
+                services[index].querySelector('p').textContent = service.text;
+            });
+            
+            // Actualizar precios
+            document.querySelector('#precios h2').textContent = langData.pricingTitle;
+            document.querySelector('#precios p').textContent = langData.pricingText;
+            
+            const plans = document.querySelectorAll('.plan');
+            langData.plans.forEach((plan, index) => {
+                plans[index].querySelector('.nombre-plan').textContent = plan.name;
+                plans[index].querySelector('.precio').innerHTML = `${plan.price}<span> / video</span>`;
                 
-                // Actualizar indicadores
-                document.querySelectorAll('.indicator').forEach((indicator, index) => {
-                    indicator.classList.toggle('active', index === currentPage);
+                const features = plans[index].querySelectorAll('.caracteristicas li');
+                plan.features.forEach((feature, featIndex) => {
+                    features[featIndex].textContent = feature;
                 });
-            }
+            });
             
-            // Navegación
-            function goToPage(page) {
-                currentPage = page;
-                if (currentPage < 0) currentPage = totalPages - 1;
-                if (currentPage >= totalPages) currentPage = 0;
-                updateCarrusel();
-            }
+            // Actualizar notas
+            document.querySelector('.notes-container h3').innerHTML = `<i class="bi bi-info-circle"></i> ${langData.notesTitle}`;
+            const notes = document.querySelectorAll('.notes-container li');
+            langData.notes.forEach((note, index) => {
+                notes[index].textContent = note;
+            });
             
-            prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
-            nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+            // Actualizar portafolio
+            document.querySelector('#portafolio h2').textContent = langData.portfolioTitle;
+            const portfolioItems = document.querySelectorAll('.overlay h3, .overlay p');
+            langData.portfolioItems.forEach((item, index) => {
+                portfolioItems[index * 2].textContent = item.title;
+                portfolioItems[index * 2 + 1].textContent = item.desc;
+            });
             
-            // Auto-desplazamiento
-            setInterval(() => {
-                goToPage(currentPage + 1);
-            }, 5000);
+            // Actualizar recursos
+            document.querySelector('#recursos h2').textContent = langData.resourcesTitle;
+            document.querySelector('#recursos p').textContent = langData.resourcesText;
             
-            // Inicializar carrusel
-            updateCarrusel();
+            // Actualizar testimonios
+            document.querySelector('#testimonios h2').textContent = langData.testimonialsTitle;
+            document.querySelector('#testimonios p').textContent = langData.testimonialsText;
+            
+            // Generar testimonios traducidos
+            generateTestimonials(langData.testimonials);
+            
+            // Actualizar contacto
+            document.querySelector('#contacto h2').textContent = langData.contactTitle;
+            document.querySelector('#contacto p').textContent = langData.contactText;
+            
+            // Actualizar footer
+            document.querySelector('footer p').textContent = langData.footerText;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Inicializar Swiper para testimonios
+            testimonialSwiper = new Swiper('.swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+            
+            // Generar testimonios iniciales (en español)
+            generateTestimonials(translations.es.testimonials);
+            
+            // Animación al hacer scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar cada sección
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Cambio de idioma
+            const langButtons = document.querySelectorAll('.lang-btn');
+            
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remover clase activa de todos los botones
+                    langButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase activa al botón clickeado
+                    button.classList.add('active');
+                    
+                    // Cambiar idioma
+                    changeLanguage(button.dataset.lang);
+                });
+            });
         });
     </script>
 </body>
