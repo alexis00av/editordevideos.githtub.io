@@ -95,7 +95,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, transparent 0%, var(--bg-dark) 150%);
+            background: radial-gradient(circle, rgba(13,17,23,0.9) 0%, rgba(13,17,23,0.95) 100%);
             z-index: 1;
         }
 
@@ -114,6 +114,20 @@
             border-radius: 50%;
             opacity: 0.3;
             animation: float 15s infinite linear;
+        }
+        
+        /* Nuevo patrón de iconos de edición */
+        .editor-icons-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M25,15 Q30,5 40,10 T60,15 T80,10 T95,20 T85,40 T90,60 T80,85 T60,90 T40,85 T20,90 T10,70 T5,50 T15,30 Z' fill='none' stroke='%2358a6ff' stroke-opacity='0.05' stroke-width='1'/%3E%3Cpath d='M35,25 L45,35 M55,25 L65,35' stroke='%2358a6ff' stroke-opacity='0.05' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='10' fill='none' stroke='%2358a6ff' stroke-opacity='0.05' stroke-width='1'/%3E%3Cpath d='M20,60 L30,70 M70,30 L80,40' stroke='%2358a6ff' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            opacity: 0.1;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -1151,11 +1165,13 @@
         <div class="editor-overlay"></div>
         <div class="particles" id="particles"></div>
         
+        <!-- Nuevo: Patrón de iconos de edición -->
+        <div class="editor-icons-pattern"></div>
+        
         <div class="hero-content">
             <h1>Alexis</h1>
             <p class="subtitle">Editor de video profesional | Transformando ideas en experiencias visuales</p>
             
-            <!-- Selector de idioma movido aquí -->
             <div class="language-selector">
                 <div class="lang-btn active" data-lang="es">ES</div>
                 <div class="lang-btn" data-lang="en">EN</div>
@@ -1167,7 +1183,6 @@
             </div>
         </div>
         
-        <!-- Flecha animada para indicar scroll -->
         <div class="scroll-indicator" onclick="document.querySelector('#sobre-mi').scrollIntoView({ behavior: 'smooth' })">
             <i class="bi bi-chevron-down"></i>
         </div>
