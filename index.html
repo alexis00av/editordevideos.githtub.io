@@ -1,224 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avelux ErgoBack™</title>
+  <title>Avelux | Bienestar y Salud</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
-      transition: background 0.3s, color 0.3s;
-    }
-    header {
-      background: linear-gradient(90deg, #0d1b2a, #1b263b);
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: 1px;
-    }
-    .language-switch {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-    }
-    .language-switch select {
-      padding: 6px;
-      border-radius: 5px;
-      border: none;
-      font-weight: bold;
-    }
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 60px 20px;
-      background: linear-gradient(to bottom, #eaf4ff, #ffffff);
-      text-align: center;
-      animation: fadeIn 1.2s ease-in;
-    }
-    .hero img {
-      max-width: 320px;
-      border-radius: 12px;
-      margin: 20px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
-    }
-    .hero img:hover {
-      transform: scale(1.05);
-    }
-    .hero h2 {
-      font-size: 28px;
-      margin-bottom: 15px;
-    }
-    .hero p {
-      font-size: 17px;
-      margin-bottom: 25px;
-      max-width: 600px;
-    }
-    .btn {
-      background: #ff6b35;
-      color: #fff;
-      padding: 14px 28px;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 10px;
-      transition: background 0.3s, transform 0.3s;
-      display: inline-block;
-    }
-    .btn:hover {
-      background: #e65b2c;
-      transform: translateY(-3px);
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 25px;
-      padding: 50px 20px;
-    }
-    .feature {
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .feature:hover {
-      transform: translateY(-5px);
-    }
-    .feature h3 {
-      margin-bottom: 12px;
-      font-size: 20px;
-      color: #0d1b2a;
-    }
-    footer {
-      background: #0d1b2a;
-      color: #fff;
-      text-align: center;
-      padding: 30px;
-      margin-top: 40px;
-    }
-    footer strong {
-      font-size: 20px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body{margin:0;font-family:Poppins,sans-serif;color:#333;line-height:1.6}
+    header{background:#fff;display:flex;justify-content:space-between;align-items:center;padding:15px 5%;border-bottom:1px solid #eee}
+    .logo{font-family:"Brush Script MT",cursive;font-size:32px;color:#0a2540;font-weight:700}
+    nav ul{display:flex;gap:25px;list-style:none;margin:0;padding:0}
+    nav ul li a{text-decoration:none;color:#0a2540;font-weight:500;transition:.3s}
+    nav ul li a:hover{color:#ff6600}
+    .btn{background:#0a2540;color:#fff;padding:12px 25px;border-radius:30px;text-decoration:none;font-weight:600;transition:.3s}
+    .btn:hover{background:#ff6600}
+    .hero{display:flex;align-items:center;justify-content:space-between;padding:60px 5%;background:#f5f5f5;flex-wrap:wrap}
+    .hero-text{max-width:500px}
+    .hero-text h1{font-size:40px;color:#0a2540}
+    .benefits{padding:60px 5%;background:#fff;text-align:center}
+    .benefits h2{color:#0a2540;margin-bottom:30px}
+    .benefit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+    .benefit{background:#f5f5f5;padding:20px;border-radius:12px}
+    .testimonios{padding:60px 5%;background:#fff;text-align:center}
+    .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+    .test{background:#f5f5f5;padding:20px;border-radius:12px}
+    .steps{padding:60px 5%;background:#f5f5f5;text-align:center}
+    .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+    .cta{padding:80px 5%;background:#0a2540;color:#fff;text-align:center}
+    .cta h2{font-size:32px;margin-bottom:20px}
+    footer{background:#111;color:#fff;padding:40px 5%;text-align:center}
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
-    <h1 id="title">Avelux ErgoBack™</h1>
-    <div class="language-switch">
-      <select id="lang" onchange="switchLanguage()">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-      </select>
-    </div>
+    <div class="logo">Avelux</div>
+    <nav>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Catálogo</a></li>
+        <li><a href="#">Beneficios</a></li>
+        <li><a href="#">Opiniones</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </nav>
+    <a href="#" class="btn">Comprar ahora</a>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
-    <h2 id="hero-title">Say Goodbye to Neck Pain</h2>
-    <p id="hero-desc">The ergonomic cervical support designed for office workers and anyone who spends long hours sitting. Instant relief, healthier posture, better you.</p>
-    <img src="https://cdn.shopify.com/s/files/1/0680/4150/7113/files/cervical_pillow.jpg" alt="Avelux ErgoBack Product">
-    <a href="#buy" class="btn" id="btn-order">Order Now</a>
-  </section>
-
-  <section class="features">
-    <div class="feature">
-      <h3 id="f1">✔️ Instant Relief</h3>
-      <p id="f1d">Relax your cervical muscles in just 10 minutes a day.</p>
+    <div class="hero-text">
+      <h1>✨ Dile adiós al dolor de cuello y espalda</h1>
+      <p>La almohada de tracción cervical diseñada para mejorar tu postura y relajar tus músculos en minutos.</p>
+      <a href="#" class="btn">Ordenar ahora</a>
     </div>
-    <div class="feature">
-      <h3 id="f2">✔️ Ergonomic Design</h3>
-      <p id="f2d">Aligns your spine and improves posture effortlessly.</p>
-    </div>
-    <div class="feature">
-      <h3 id="f3">✔️ Portable</h3>
-      <p id="f3d">Use it at home, in the office, or while traveling.</p>
-    </div>
-    <div class="feature">
-      <h3 id="f4">✔️ Trusted by Many</h3>
-      <p id="f4d">Ideal for people with neck pain and stiffness.</p>
+    <div class="hero-img">
+      <img src="https://via.placeholder.com/500x400" alt="Mujer usando almohada" style="border-radius:12px;">
     </div>
   </section>
 
-  <footer id="buy">
-    <p><strong id="price">Get yours today for only $34.99</strong></p>
-    <a href="#" class="btn" id="btn-buy">Buy Now</a>
-    <p style="margin-top:10px;">© 2025 Avelux. All rights reserved.</p>
+  <!-- BENEFICIOS -->
+  <section class="benefits">
+    <h2>🌟 Beneficios principales</h2>
+    <div class="benefit-grid">
+      <div class="benefit">✅ Alivio inmediato de tensión cervical</div>
+      <div class="benefit">💤 Mejora el sueño y la postura</div>
+      <div class="benefit">💎 Material ergonómico y duradero</div>
+      <div class="benefit">🚚 Envío rápido y seguro</div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonios">
+    <h2>❤️ Opiniones de clientes</h2>
+    <div class="test-grid">
+      <div class="test">⭐⭐⭐⭐⭐<br>“Después de una semana, mi dolor de cuello desapareció.” – Ana M.</div>
+      <div class="test">⭐⭐⭐⭐⭐<br>“Lo uso todas las noches y duermo mucho mejor.” – Carlos R.</div>
+      <div class="test">⭐⭐⭐⭐⭐<br>“Increíble calidad, lo recomiendo al 100%.” – Sofía L.</div>
+    </div>
+  </section>
+
+  <!-- PASOS -->
+  <section class="steps">
+    <h2>Cómo funciona</h2>
+    <div class="steps-grid">
+      <div>📦 Pide tu almohada online</div>
+      <div>💆 Úsala 10 minutos al día</div>
+      <div>🌙 Siente alivio y mejora tu descanso</div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta">
+    <h2>Empieza hoy tu camino hacia una vida sin dolor</h2>
+    <a href="#" class="btn">Comprar ahora con descuento</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Avelux | Todos los derechos reservados</p>
   </footer>
-
-  <script>
-    const translations = {
-      en: {
-        title: "Avelux ErgoBack™",
-        heroTitle: "Say Goodbye to Neck Pain",
-        heroDesc: "The ergonomic cervical support designed for office workers and anyone who spends long hours sitting. Instant relief, healthier posture, better you.",
-        btnOrder: "Order Now",
-        f1: "✔️ Instant Relief",
-        f1d: "Relax your cervical muscles in just 10 minutes a day.",
-        f2: "✔️ Ergonomic Design",
-        f2d: "Aligns your spine and improves posture effortlessly.",
-        f3: "✔️ Portable",
-        f3d: "Use it at home, in the office, or while traveling.",
-        f4: "✔️ Trusted by Many",
-        f4d: "Ideal for people with neck pain and stiffness.",
-        price: "Get yours today for only $34.99",
-        btnBuy: "Buy Now"
-      },
-      es: {
-        title: "Avelux ErgoBack™",
-        heroTitle: "Adiós al dolor cervical",
-        heroDesc: "El soporte ergonómico diseñado para trabajadores de oficina y cualquier persona que pasa largas horas sentado. Alivio inmediato, mejor postura, mejor tú.",
-        btnOrder: "Ordenar ahora",
-        f1: "✔️ Alivio inmediato",
-        f1d: "Relaja tus músculos cervicales en solo 10 minutos al día.",
-        f2: "✔️ Diseño ergonómico",
-        f2d: "Alinea tu columna y mejora la postura sin esfuerzo.",
-        f3: "✔️ Portátil",
-        f3d: "Úsalo en casa, en la oficina o de viaje.",
-        f4: "✔️ Confiado por muchos",
-        f4d: "Ideal para personas con dolor y rigidez en el cuello.",
-        price: "Consigue el tuyo hoy por solo $34.99",
-        btnBuy: "Comprar ahora"
-      }
-    };
-
-    function switchLanguage() {
-      const lang = document.getElementById("lang").value;
-      const t = translations[lang];
-      document.getElementById("title").innerText = t.title;
-      document.getElementById("hero-title").innerText = t.heroTitle;
-      document.getElementById("hero-desc").innerText = t.heroDesc;
-      document.getElementById("btn-order").innerText = t.btnOrder;
-      document.getElementById("f1").innerText = t.f1;
-      document.getElementById("f1d").innerText = t.f1d;
-      document.getElementById("f2").innerText = t.f2;
-      document.getElementById("f2d").innerText = t.f2d;
-      document.getElementById("f3").innerText = t.f3;
-      document.getElementById("f3d").innerText = t.f3d;
-      document.getElementById("f4").innerText = t.f4;
-      document.getElementById("f4d").innerText = t.f4d;
-      document.getElementById("price").innerText = t.price;
-      document.getElementById("btn-buy").innerText = t.btnBuy;
-    }
-  </script>
 
 </body>
 </html>
